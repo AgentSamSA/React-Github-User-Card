@@ -20,7 +20,7 @@ class App extends React.Component {
       })
       .catch(err => console.log(err));
 
-      axios.get(API_LINK + initialUser + "/followers")
+    axios.get(API_LINK + initialUser + "/followers")
       .then((res) => {
         console.log(res);
         this.setState({
@@ -39,7 +39,7 @@ class App extends React.Component {
   onSubmit = (event) => {
     event.preventDefault();
     console.log(this.state.searchInput);
-    fetchUserData(this.state.searchInput)
+    fetchUserData(this.state.searchInput.toLowerCase())
       .then((res) => {
         this.setState({
           userInfo: res.data,
@@ -47,7 +47,7 @@ class App extends React.Component {
       })
       .catch(err => console.log(err));
 
-      axios.get(API_LINK + this.state.searchInput + "/followers")
+    axios.get(API_LINK + this.state.searchInput.toLowerCase() + "/followers")
       .then((res) => {
         console.log(res);
         this.setState({
@@ -56,9 +56,9 @@ class App extends React.Component {
       })
       .catch(err => console.log(err));
 
-      this.setState({
-        searchInput: ""
-      });
+    this.setState({
+      searchInput: ""
+    });
 
   }
 
@@ -69,43 +69,47 @@ class App extends React.Component {
 
     return (
       <div>
-        <h1>Get a Github User's Card!</h1>
+        <div className="header">
+          <h1>Get a Github User's Card!</h1>
 
-        <form onSubmit={this.onSubmit}>
-          <input
-            value={this.state.searchInput}
-            placeholder="Search for a user"
-            onChange={this.onChange} />
-          <button>Search</button>
-        </form>
+          <form onSubmit={this.onSubmit}>
+            <input
+              value={this.state.searchInput}
+              placeholder="Search for a user"
+              onChange={this.onChange} />
+            <button>Search</button>
+          </form>
+        </div>
 
-        <div>
+        <div className="user">
           <h2>{user}</h2>
 
           <img width="300" src={userState.avatar_url} alt={user} />
           <br></br>
 
-          <a href={userState.html_url} target="_blank">{`${user}'s Github Profile`}</a>
+          <a href={userState.html_url} target="_blank" className="link">{`${user}'s Github Profile`}</a>
 
           <p>Following: {userState.following}</p>
 
           <p>Followed by: </p>
+        </div>
 
-          <div>
-            {
-              !userFollowerState ? "Loading follower information" :
+        <div className="followers">
+          {
+            !userFollowerState ? "Loading follower information" :
               userFollowerState.map(follower => {
                 return (
                   <div key={follower.id}>
-                    <h4>{follower.login}</h4>
-                    <img width="150" src={follower.avatar_url} alt={follower.login} />
+                    <a href={follower.html_url} target="_blank" className="link">
+                      <h4>{follower.login}</h4>
+                      <img width="150" src={follower.avatar_url} alt={follower.login} />
+                    </a>
                   </div>
                 )
               })
-            }
-          </div>
+          }
         </div>
-      </div>
+      </div >
     )
   }
 }
