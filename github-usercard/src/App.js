@@ -1,12 +1,13 @@
 import React from "react";
+import axios from "axios";
 import fetchUserData from "./services/fetchUserData";
-import { initialUser } from "./services/constants";
+import { API_LINK, initialUser } from "./services/constants";
 import './App.css';
 
 class App extends React.Component {
   state = {
     userInfo: {},
-    userFollowerInfo: [],
+    userFollowers: [],
     searchInput: ""
   }
 
@@ -15,9 +16,18 @@ class App extends React.Component {
       .then((res) => {
         this.setState({
           userInfo: res.data,
-          userFollowerInfo: res.data.followers_url
         });
-      });
+      })
+      .catch(err => console.log(err));
+
+      axios.get(API_LINK + initialUser + "/followers")
+      .then((res) => {
+        console.log(res);
+        this.setState({
+          userFollowers: res.data
+        });
+      })
+      .catch(err => console.log(err));
   }
 
   onChange = (event) => {
@@ -33,15 +43,29 @@ class App extends React.Component {
       .then((res) => {
         this.setState({
           userInfo: res.data,
-          userFollowerInfo: res.data.followers_url
-        })
+        });
+      })
+      .catch(err => console.log(err));
+
+      axios.get(API_LINK + this.state.searchInput + "/followers")
+      .then((res) => {
+        console.log(res);
+        this.setState({
+          userFollowers: res.data
+        });
+      })
+      .catch(err => console.log(err));
+
+      this.setState({
+        searchInput: ""
       });
+
   }
 
   render() {
     let userState = this.state.userInfo;
     let user = userState.login;
-    let userFollowerState = this.state.userFollowerInfo;
+    let userFollowerState = this.state.userFollowers;
 
     return (
       <div>
