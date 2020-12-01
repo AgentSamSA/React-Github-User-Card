@@ -1,3 +1,8 @@
+.link {
+  text-decoration: none;
+  color: black;
+}
+
 .header {
   display: flex;
   flex-direction: column;
@@ -17,7 +22,8 @@
   justify-content: space-evenly;
 }
 
-.link {
-  text-decoration: none;
-  color: black;
+.github-chart {
+  margin: 2% 0;
+  height: 200px;
+  border: 1px solid black;
 }

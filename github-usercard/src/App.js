@@ -87,6 +87,8 @@ class App extends React.Component {
           <img width="300" src={userState.avatar_url} alt={user} />
           <br></br>
 
+          <img src={`http://ghchart.rshah.org/${user}`} alt={`${user}'s Github chart`} className="github-chart" />
+
           <a href={userState.html_url} target="_blank" className="link">{`${user}'s Github Profile`}</a>
 
           <p>Following: {userState.following}</p>
